@@ -1,0 +1,40 @@
+# Archivos de entorno
+.env
+.env.*
+!.env.example
+
+# Dependencias de Node
+node_modules/
+
+# Archivos de configuración local
+config/local/
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Archivos de compilación
+dist/
+build/
+coverage/
+
+# Archivos de package manager
+package-lock.json
+yarn.lock
+
+# Archivos de test
+test-db.js
