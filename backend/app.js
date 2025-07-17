@@ -41,11 +41,29 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 const socioRoutes = require('./routes/socioRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
+
+
+
+//const empleadoRoutes = require('./routes/empleadoRoutes');
 
 // Usar rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/socios', socioRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+
+
+
+//app.use('/api/empleados', empleadoRoutes);
+
+
+// Permitir acceso desde el frontend en el puerto 8080
+app.use(cors({
+  origin: 'http://127.0.0.1:8080',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Manejador de errores
 app.use((err, req, res, next) => {

@@ -1,0 +1,50 @@
+cooperativa-web/
+├── frontend/       # Aplicación React/Vue/Angular
+├── backend/        # Servidor Node.js con Express
+├── database/       # Scripts y configuración de Oracle
+└── docs/           # Documentación
+
+
+estructura de direcctorios:
+backend/
+├── config/
+│   ├── database.js      # Configuración conexión Oracle
+│   └── auth.js         # Configuración autenticación
+├── controllers/
+│   ├── authController.js
+│   ├── socioController.js
+│   ├── prestamoController.js
+│   ├── ahorroController.js
+│   ├── actividadController.js
+│   └── adminController.js
+├── models/
+│   ├── usuarioModel.js
+│   ├── socioModel.js
+│   ├── prestamoModel.js
+│   └── ... (otros modelos)
+├── routes/
+│   ├── authRoutes.js
+│   ├── socioRoutes.js
+│   ├── apiRoutes.js
+│   └── adminRoutes.js
+├── middlewares/
+│   ├── authMiddleware.js
+│   └── roleMiddleware.js
+├── utils/
+│   ├── dbUtils.js       # Funciones auxiliares BD
+│   └── logger.js        # Logging
+├── app.js               # Aplicación principal
+└── server.js            # Punto de entrada
+
+
+estructura de frond
+frontend/
+├── index.html              ← Página principal
+├── css/
+│   └── styles.css          ← Estilos globales
+├── js/
+│   └── main.js             ← Lógica JS para consumir la API
+├── assets/
+│   └── (imagenes, logos)
+└── README.md
+

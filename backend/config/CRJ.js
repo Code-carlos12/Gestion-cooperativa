@@ -1,7 +1,7 @@
 const oracledb = require('oracledb');
 require('dotenv').config();
 
-// Configuración del pool de conexiones
+// Configuracion del pool de conexiones
 const dbConfig = {
   user: process.env.DB_USER || 'cooperativa',
   password: process.env.DB_PASSWORD || 'cooperativa123',
@@ -14,19 +14,20 @@ const dbConfig = {
   stmtCacheSize: 30
 };
 
-// Inicializar el cliente Oracle
+// Inicializar el cliente Oracle (solo necesario si estás en Windows y usas Oracle Instant Client)
 try {
-  oracledb.initOracleClient({ libDir: process.env.ORACLE_CLIENT_PATH });
-  console.log('Oracle client initialized');
+  if (process.env.ORACLE_CLIENT_PATH) {
+    oracledb.initOracleClient({ libDir: process.env.ORACLE_CLIENT_PATH });
+    console.log('Oracle client initialized');
+  }
 } catch (err) {
   console.error('Error initializing Oracle client:', err);
 }
 
-// Función para obtener una conexión
+// Obtener una conexion del pool
 async function getConnection() {
-  let connection;
   try {
-    connection = await oracledb.getConnection(dbConfig);
+    const connection = await oracledb.getConnection(dbConfig);
     return connection;
   } catch (err) {
     console.error('Error al obtener conexión:', err);
@@ -34,12 +35,15 @@ async function getConnection() {
   }
 }
 
-// Función para ejecutar consultas
+// Ejecutar una consulta individual (SELECT, INSERT, UPDATE, DELETE)
 async function executeQuery(sql, binds = [], options = {}) {
   let connection;
   try {
     connection = await getConnection();
     options.outFormat = oracledb.OUT_FORMAT_OBJECT;
+    if (options.autoCommit === undefined) {
+      options.autoCommit = true; // Auto-commit por defecto
+    }
     const result = await connection.execute(sql, binds, options);
     return result;
   } catch (err) {
@@ -56,19 +60,19 @@ async function executeQuery(sql, binds = [], options = {}) {
   }
 }
 
-// Función para ejecutar transacciones
+// Ejecutar una serie de transacciones (si necesitas múltiples pasos antes de hacer commit)
 async function executeTransaction(queries) {
   let connection;
   try {
     connection = await getConnection();
     await connection.execute('BEGIN');
-    
+
     const results = [];
     for (const query of queries) {
-      const result = await connection.execute(query.sql, query.binds, query.options);
+      const result = await connection.execute(query.sql, query.binds, query.options || {});
       results.push(result);
     }
-    
+
     await connection.execute('COMMIT');
     return results;
   } catch (err) {
